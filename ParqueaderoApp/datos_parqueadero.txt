@@ -1,0 +1,2 @@
+Carro;ABC123;carlos;0;0;2
+Moto;XYZ98A;Ana;1;2;3
