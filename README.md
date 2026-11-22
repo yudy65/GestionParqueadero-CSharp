@@ -1,15 +1,16 @@
-# Sistema de Gestión de Parqueadero (ParkControl C#)
+# ParkControl C# - Sistema de Gestión de Parqueadero
 
-Aplicación de escritorio desarrollada en **C# con Windows Forms (100% por código)** para administrar el ingreso, ubicación y cobro de vehículos en un parqueadero.
+Aplicación de escritorio desarrollada en **C# (Windows Forms 100% por código)** para administrar el ingreso, ubicación, búsqueda rápida, cálculo de tarifas y reportes estadísticos de un parqueadero.
 
-## Integrantes
-* [Tu Nombre Completo]
-* [Nombre de tu Compañero/a] *(eliminar si es individual)*
+## Problema que resuelve
+Automatiza el control operativo de un parqueadero de 3 pisos y 4 puestos por piso (12 celdas), eliminando errores manuales en el cobro según el tipo de vehículo (Carro o Moto), evitando la doble asignación de puestos o placas duplicadas y conservando el historial de registros en un archivo de texto plano.
 
-## Problema a resolver
-En parqueaderos pequeños que llevan su control de forma manual, es frecuente asignar por error un mismo espacio a dos vehículos, perder trazabilidad de los registros al cerrar el turno y cometer errores al calcular tarifas diferenciadas entre carros y motos. 
-
-Esta aplicación automatiza la asignación de celdas mediante un mapa visual, valida duplicados y cupos en tiempo real, calcula tarifas mediante polimorfismo y guarda los registros en un archivo de texto plano para evitar pérdida de información.
+## Funcionalidades Principales
+1. **Registro y Validación de Ingresos:** Valida campos obligatorios (`ErrorProvider`), placas duplicadas y disponibilidad en matriz.
+2. **Búsqueda Rápida por Placa:** Localiza vehículos activos al instante mostrando propietario, ubicación y tarifa.
+3. **Cálculo Automático de Tarifas (Polimorfismo):** Carros liquidan `$3.500/hora + $1.000` de recargo y Motos `$1.800/hora`.
+4. **Informe Estadístico del Turno:** Resume total de vehículos, recaudos, intentos rechazados y alerta de cupo lleno.
+5. **Persistencia en Archivo Plano:** Guarda y restaura los datos automáticamente desde `datos_parqueadero.txt`.
 
 ## Diagrama UML de Clases
 
@@ -47,11 +48,13 @@ classDiagram
         -string rutaArchivo
         +GestorParqueadero()
         +string RegistrarIngreso(Vehiculo v)
+        +Vehiculo BuscarPorPlaca(string placa)
         +string GenerarInforme()
         +void GuardarEnArchivo()
         +void CargarDesdeArchivo()
     }
 
-    Vehiculo <|-- Carro
-    Vehiculo <|-- Moto
-    GestorParqueadero o-- Vehiculo : administra
+    Vehiculo <|-- Carro : Hereda
+    Vehiculo <|-- Moto : Hereda
+    GestorParqueadero "1" *-- "*" Vehiculo : Gestiona
+    
